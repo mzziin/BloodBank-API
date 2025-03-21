@@ -1,12 +1,8 @@
-import User from "../models/user"
+import User from '../models/user.js'
 
-const getAllUsers = async (req, res) => {
+export const getAllUsers = async (req, res) => {
     try {
         const users = await User.find({})
-
-        if (users.length === 0) {
-            return res.status(404).json({ message: "No users found" });
-        }
 
         res.status(200).json(users)
     } catch (err) {
@@ -14,7 +10,7 @@ const getAllUsers = async (req, res) => {
     }
 }
 
-const getUserById = async (req, res) => {
+export const getUserById = async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
         if (!user)
@@ -25,7 +21,7 @@ const getUserById = async (req, res) => {
     }
 }
 
-const createUser = async (req, res) => {
+export const createUser = async (req, res) => {
     try {
         const { email } = req.body
 
@@ -33,15 +29,15 @@ const createUser = async (req, res) => {
         if (isUserExist)
             return res.status(400).json({ message: "User already exists" })
 
-        const user = await User.create(req.body)
+        const newUser = await User.create(req.body);
 
-        res.status(201).json({ message: "User created successfully", user })
+        res.status(201).json({ message: "User created successfully", newUser })
     } catch (err) {
         res.status(500).json({ message: "Internal server error", error: err.message })
     }
 }
 
-const updateUser = async (req, res) => {
+export const updateUser = async (req, res) => {
     try {
         const updates = req.body;
 
@@ -63,7 +59,7 @@ const updateUser = async (req, res) => {
     }
 }
 
-const deleteUser = async (req, res) => {
+export const deleteUser = async (req, res) => {
     try {
         const user = await User.findByIdAndDelete(req.params.id)
         if (!user)
@@ -73,12 +69,4 @@ const deleteUser = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: "Internal server error", error: err.message })
     }
-}
-
-export default {
-    getAllUsers,
-    getUserById,
-    createUser,
-    updateUser,
-    deleteUser
 }
