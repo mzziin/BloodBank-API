@@ -14,4 +14,4 @@ const userSchema = mongoose.Schema({
     availabilityStatus: { type: Boolean, default: true },
 }, { timestamps: true });
 
-export default mongoose.model('user', userSchema)
+export default mongoose.model('User', userSchema)
