@@ -3,7 +3,7 @@ import mongoose from "mongoose"
 const userSchema = mongoose.Schema({
     fullName: { type: String, required: true },
     email: { type: String, unique: true, required: true },
-    phoneNumber: { type: String, required: true, match: [/^\d{10}$/, "Invalid phone number format"] },
+    phoneNumber: { type: String, required: true, match: [/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/, "Invalid phone number format"] },
     bloodGroup: { type: String, required: true, enum: ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'] },
     lastDonationDate: { type: Date },
     eligibleToDonate: { type: Boolean, default: true },

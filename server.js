@@ -1,10 +1,13 @@
 import app from './app.js'
+import connectDb from './config/db.config.js';
 
 const startServer = async () => {
     try {
-        const PORT = process.env.PORT || 3000;
+        //connect to db
+        await connectDb();
 
         //start server after db is connected
+        const PORT = process.env.PORT || 3000;
         app.listen(PORT, () => {
             console.log(`server is running on prot ${PORT}`)
         })
