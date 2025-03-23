@@ -7,6 +7,7 @@ import usersRoutes from './routes/usersRoutes.js'
 const app = express()
 
 app.use(cors())
+// security
 app.use(helmet())
 dotenv.config()
 app.use(express.json())

@@ -2,13 +2,33 @@ import User from '../models/user.js'
 
 export const getAllUsers = async (req, res) => {
     try {
-        const users = await User.find({})
+        const { page, limit, bloodGroup } = req.query;
 
-        res.status(200).json(users)
+        // Set default values for pagination
+        const currentPage = parseInt(page) || 1;
+        const resultsPerPage = parseInt(limit) || 10;
+        const skip = (currentPage - 1) * resultsPerPage;
+
+        const filter = bloodGroup ? { bloodGroup: bloodGroup } : {};
+
+        const users = await User.find(filter)
+            .skip(skip)
+            .limit(resultsPerPage);
+
+        // Count total users for pagination metadata
+        const totalUsers = await User.countDocuments(filter);
+
+        res.status(200).json({
+            currentPage,
+            resultsPerPage,
+            totalUsers,
+            totalPages: Math.ceil(totalUsers / resultsPerPage),
+            data: users,
+        });
     } catch (err) {
-        res.status(500).json({ message: "Internal server error", error: err.message })
+        res.status(500).json({ message: "Internal server error", error: err.message });
     }
-}
+};
 
 export const getUserById = async (req, res) => {
     try {
